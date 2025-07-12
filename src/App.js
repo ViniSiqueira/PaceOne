@@ -4,6 +4,10 @@ import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import PrivateRoute from './routes/PrivateRoute';
 import { Toaster } from 'react-hot-toast';
+import DefaultLayout from './layouts/DefaultLayout';
+import 'primereact/resources/themes/lara-light-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 function App() {
   return (
@@ -17,7 +21,9 @@ function App() {
             path="/home"
             element={
               <PrivateRoute>
-                <Home />
+                <DefaultLayout>
+                  <Home />
+                </DefaultLayout>
               </PrivateRoute>
             }
           />

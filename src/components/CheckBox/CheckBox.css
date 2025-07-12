@@ -2,12 +2,11 @@
   display: flex;
   align-items: center;  
   font-size: 0.85rem;
-  color: white;
+  color: var(--light);
   cursor: pointer;
 }
 
-.custom-checkbox input[type="checkbox"] {
-  accent-color: #6dd400;
+.custom-checkbox input[type="checkbox"] {  
   width: 16px;
   height: 16px;
   cursor: pointer;

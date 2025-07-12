@@ -15,7 +15,7 @@
     border-radius: 12px;
     width: 100%;
     max-width: 450px;
-    color: white;
+    color: var(--light);
     display: flex;
     flex-direction: column;
     gap: 12px;

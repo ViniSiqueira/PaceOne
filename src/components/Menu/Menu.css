@@ -1,0 +1,44 @@
+.sidebar {
+    width: 100px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    align-items: center;
+}
+
+.menu-icon {
+    color: var(--primariaClaro);
+}
+
+.menu-label {
+    color: var(--light);
+}
+
+.menu-item {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    transition: color 0.3s;
+}
+
+.menu-item .menu-icon {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+.menu-item.active,
+.menu-item:hover {
+    color: #65d73d;
+}

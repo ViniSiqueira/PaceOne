@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    padding: 2px;
+    align-items: center;
+}
+
+.text-header {
+    color: var(--light);
+}
+
+.header-content {
+    margin-left: auto;
+    display: flex;
+    margin-right: 10px;
+}
+
+.header-notification {
+    display: flex;
+    color: var(--light);
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.header-badge-notification {
+    position: relative;
+    top: -8px;
+    right: 15px;
+    background-color: var(--cinza);
+}
+
+.header-icon-notification{
+    color: var(--primariaClaro);
+}

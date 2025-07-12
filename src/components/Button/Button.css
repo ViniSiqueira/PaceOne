@@ -7,9 +7,9 @@
   cursor: pointer;
   transition: background 0.3s;
   font-size: 1rem;
-  background-color: var(--bg-color, #65D73D);
+  background-color: var(--bg-color, var(--sucess));
 }
 
 .custom-button:hover {
-  background-color: var(--hover-color, #3FB017);
+  background-color: var(--hover-color, var(--sucessEscuro));
 }
