@@ -1,0 +1,25 @@
+.custom-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.custom-input-label {
+    font-size: 0.9rem;
+    color: white;
+}
+
+.custom-input {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: rgb(37 37 37 / 60%);
+    color: white;
+}
+
+.custom-input::placeholder {
+    color: white;
+    opacity: 1;    
+}
