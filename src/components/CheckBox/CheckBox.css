@@ -1,0 +1,15 @@
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: white;
+  cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  accent-color: #6dd400;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

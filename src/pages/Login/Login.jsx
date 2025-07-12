@@ -4,10 +4,13 @@ import logo from '../../assets/logoPrincipal.png'
 import './Login.css'
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import Checkbox from '../../components/CheckBox/CheckBox';
+import Label from '../../components/Label/Label';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
+  const [manterConectado, setManterConectado] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -33,19 +36,20 @@ const Login = () => {
         <Input
           label="Senha"
           type="password"
-          placeholder="***************"
+          placeholder="***********"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
         <div className="login-options">
-          <label>
-            <input type="checkbox" />
-            Mantenha-me conectado
-          </label>
-          <a href="/">Esqueci minha senha</a>
+          <Checkbox
+            label="Mantenha-me conectado"
+            checked={manterConectado}
+            onChange={(e) => setManterConectado(e.target.checked)}
+          />
+          <Label text="Esqueci minha senha" href="/" />
         </div>
         <Button
-          onClick={handleLogin}        
+          onClick={handleLogin}
         >
           Acessar
         </Button>

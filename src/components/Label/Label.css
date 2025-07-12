@@ -1,0 +1,12 @@
+.custom-label {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.custom-label:hover {
+  color: #6dd400;
+  text-decoration: underline;
+}
