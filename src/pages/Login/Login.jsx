@@ -6,6 +6,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Checkbox from '../../components/CheckBox/CheckBox';
 import Label from '../../components/Label/Label';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -16,9 +17,10 @@ const Login = () => {
   const handleLogin = () => {
     if (usuario === 'admin' && senha === '123') {
       localStorage.setItem('auth', 'true');
+      toast.success('Login realizado com sucesso!');
       navigate('/home');
     } else {
-      alert('Login inválido');
+      toast.error('Usuário ou senha inválidos');
     }
   };
 
