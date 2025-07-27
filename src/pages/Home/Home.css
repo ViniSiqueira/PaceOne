@@ -1,0 +1,26 @@
+.text-impact-phrase-home {
+  text-align: right;
+  color: white;
+  line-height: 1.4;
+}
+
+.text-impact-phrase-bold-home {
+  font-weight: bold;
+  color: white;
+}
+
+.text-impact-phrase-highlight-home {
+  color: var(--secundariaEscuro); 
+}
+
+.container-header-home {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.text-welcome-home {
+  color: white;
+  font-weight: bold;
+}
