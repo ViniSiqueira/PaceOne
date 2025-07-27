@@ -14,7 +14,7 @@ export const MenuEnum = [
     },
     {
         label: 'Clientes',
-        path: '/home',
+        path: '/listClients',
         icon: <FaUsers />
     },
     {

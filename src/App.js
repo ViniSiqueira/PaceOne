@@ -8,6 +8,7 @@ import DefaultLayout from './layouts/DefaultLayout';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import ListClients from './pages/Clients/ListClients';
 
 function App() {
   return (
@@ -23,6 +24,16 @@ function App() {
               <PrivateRoute>
                 <DefaultLayout>
                   <Home />
+                </DefaultLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/listClients"
+            element={
+              <PrivateRoute>
+                <DefaultLayout>
+                  <ListClients />
                 </DefaultLayout>
               </PrivateRoute>
             }
