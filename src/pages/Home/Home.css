@@ -1,26 +1,46 @@
 .text-impact-phrase-home {
-  text-align: right;
-  color: white;
-  line-height: 1.4;
+    text-align: right;
+    color: white;
+    line-height: 1.4;
 }
 
 .text-impact-phrase-bold-home {
-  font-weight: bold;
-  color: white;
+    font-weight: bold;
+    color: white;
 }
 
 .text-impact-phrase-highlight-home {
-  color: var(--secundariaEscuro); 
+    color: var(--secundariaEscuro);
 }
 
 .container-header-home {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
 }
 
 .text-welcome-home {
-  color: white;
-  font-weight: bold;
+    color: white;
+    font-weight: bold;
+}
+
+.dashboard-grid-home {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card-dashboard-home {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 290px;
+}
+
+.card-treinos-home {
+  grid-row: span 2;
 }
