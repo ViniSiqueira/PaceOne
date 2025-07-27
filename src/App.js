@@ -8,7 +8,8 @@ import DefaultLayout from './layouts/DefaultLayout';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import ListClients from './pages/Clients/ListClients';
+import ListClients from './pages/Clients/List/ListClients';
+import CreateClient from './pages/Clients/Create/CreateClient';
 
 function App() {
   return (
@@ -34,6 +35,16 @@ function App() {
               <PrivateRoute>
                 <DefaultLayout>
                   <ListClients />
+                </DefaultLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/createClient"
+            element={
+              <PrivateRoute>
+                <DefaultLayout>
+                  <CreateClient />
                 </DefaultLayout>
               </PrivateRoute>
             }
