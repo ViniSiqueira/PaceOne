@@ -1,5 +1,6 @@
 import React from 'react';
 import './Home.css'
+import CalendarCard from '../../components/CalendarCard/CalendarCard';
 
 const Home = () => {
   return (
@@ -23,7 +24,10 @@ const Home = () => {
         <div className="card-dashboard-home">Preparação de treinos</div>
         <div className="card-dashboard-home card-treinos-home">Treinos da semana</div>
         <div className="card-dashboard-home">Mensalidades</div>
-        <div className="card-dashboard-home">Eventos</div>
+        <div className="card-dashboard-home">
+          <h3>Eventos</h3>
+          <CalendarCard />
+        </div>
       </div>
     </div>
   );
