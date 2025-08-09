@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import './CreateClient.css';
 
 const diasDaSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -41,9 +42,60 @@ const CreateClient = () => {
         setForm({ ...form, diasDeTreino: selecionados });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Dados do cliente:', form);
+        
+        const payload = {
+            ...form,
+            dias_de_treino: form.diasDeTreino,
+        };
+        delete payload.diasDeTreino;
+
+        try {
+            const response = await fetch('http://localhost:5000/api/clientes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Erro ao salvar cliente');
+            }
+
+            const data = await response.json();
+            toast.success('Cliente salvo com sucesso!');
+            console.log('Cliente salvo:', data.cliente);
+            
+            setForm({
+                nome: '',
+                cpf: '',
+                nascimento: '',
+                status: '',
+                email: '',
+                telefone: '',
+                cep: '',
+                logradouro: '',
+                bairro: '',
+                cidade: '',
+                complemento: '',
+                estado: '',
+                emergencia_nome: '',
+                emergencia_telefone: '',
+                limitacao_fisica: '',
+                cirurgia: '',
+                problema_articular: '',
+                pratica_atividade: '',
+                diasDeTreino: [],
+                modalidade: '',
+                plano: '',
+            });
+        } catch (error) {
+            toast.error(error.message);
+            console.error('Erro ao salvar cliente:', error);
+        }
     };
 
     return (
@@ -65,7 +117,7 @@ const CreateClient = () => {
             <input type="text" name="bairro" placeholder="Bairro" value={form.bairro} onChange={handleChange} />
             <input type="text" name="cidade" placeholder="Cidade" value={form.cidade} onChange={handleChange} />
             <input type="text" name="complemento" placeholder="Complemento" value={form.complemento} onChange={handleChange} />
-            <input type="text" name="estado" placeholder="Estado" value={form.estado} onChange={handleChange} />            
+            <input type="text" name="estado" placeholder="Estado" value={form.estado} onChange={handleChange} />
             <input
                 type="text"
                 name="emergenciaNome"
