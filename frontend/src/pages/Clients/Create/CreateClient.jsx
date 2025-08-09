@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import './CreateClient.css';
+import { API_BACKEND_URL } from '../../../constants/url';
 
 const diasDaSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
@@ -52,7 +53,7 @@ const CreateClient = () => {
         delete payload.diasDeTreino;
 
         try {
-            const response = await fetch('http://localhost:5000/api/clientes', {
+            const response = await fetch(`${API_BACKEND_URL}/api/clientes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

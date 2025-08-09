@@ -61,4 +61,15 @@ const salvarCliente = async (req, res) => {
   }
 };
 
-module.exports = { salvarCliente };
+const listClients = async (req, res) => {
+  try {
+    const query = 'SELECT * FROM cliente ORDER BY id';
+    const result = await pool.query(query);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar clientes:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+};
+
+module.exports = { salvarCliente, listClients };
