@@ -20,6 +20,12 @@ const CreateClient = () => {
         diasDeTreino: [],
         modalidade: '',
         plano: '',
+        emergenciaNome: '',
+        emergenciaTelefone: '',
+        limitacaoFisica: '',
+        cirurgia: '',
+        problemaArticular: '',
+        praticaAtividade: '',
     });
 
     const handleChange = (e) => {
@@ -38,7 +44,6 @@ const CreateClient = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Dados do cliente:', form);
-
     };
 
     return (
@@ -60,7 +65,49 @@ const CreateClient = () => {
             <input type="text" name="bairro" placeholder="Bairro" value={form.bairro} onChange={handleChange} />
             <input type="text" name="cidade" placeholder="Cidade" value={form.cidade} onChange={handleChange} />
             <input type="text" name="complemento" placeholder="Complemento" value={form.complemento} onChange={handleChange} />
-            <input type="text" name="estado" placeholder="Estado" value={form.estado} onChange={handleChange} />
+            <input type="text" name="estado" placeholder="Estado" value={form.estado} onChange={handleChange} />            
+            <input
+                type="text"
+                name="emergenciaNome"
+                placeholder="Nome para contato de emergência"
+                value={form.emergenciaNome}
+                onChange={handleChange}
+            />
+            <input
+                type="tel"
+                name="emergenciaTelefone"
+                placeholder="Telefone para contato de emergência"
+                value={form.emergenciaTelefone}
+                onChange={handleChange}
+            />
+            <textarea
+                name="limitacaoFisica"
+                placeholder="Possui alguma limitação física ou lesão atual?"
+                value={form.limitacaoFisica}
+                onChange={handleChange}
+                rows={3}
+            />
+            <textarea
+                name="cirurgia"
+                placeholder="Já fez cirurgia? (qual e quando)"
+                value={form.cirurgia}
+                onChange={handleChange}
+                rows={3}
+            />
+            <textarea
+                name="problemaArticular"
+                placeholder="Tem algum problema articular ou ósseo que poderia piorar com atividade física?"
+                value={form.problemaArticular}
+                onChange={handleChange}
+                rows={3}
+            />
+            <textarea
+                name="praticaAtividade"
+                placeholder="Já pratica ou praticou atividade física? (qual e com que frequência)"
+                value={form.praticaAtividade}
+                onChange={handleChange}
+                rows={3}
+            />
 
             <label>Dias de Treino:</label>
             <div className="dias-container">
