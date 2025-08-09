@@ -38,7 +38,7 @@ const CreateClient = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Dados do cliente:', form);
-       
+
     };
 
     return (
@@ -71,7 +71,7 @@ const CreateClient = () => {
                             checked={form.diasDeTreino.includes(dia)}
                             onChange={() => handleDiaChange(dia)}
                         />
-                        {dia}
+                        <span>{dia}</span>
                     </label>
                 ))}
             </div>

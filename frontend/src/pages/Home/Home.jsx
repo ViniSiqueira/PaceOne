@@ -4,7 +4,7 @@ import CalendarCard from '../../components/CalendarCard/CalendarCard';
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-page">
       <div className='container-header-home'>
         <h2 className='text-welcome-home'>Bem-vindo ao sistema!</h2>
         <h2 className="text-impact-phrase-home">

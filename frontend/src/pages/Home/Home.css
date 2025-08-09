@@ -1,37 +1,46 @@
 .text-impact-phrase-home {
-    text-align: right;
-    color: white;
-    line-height: 1.4;
+  text-align: right;
+  color: white;
+  line-height: 1.4;
 }
 
 .text-impact-phrase-bold-home {
-    font-weight: bold;
-    color: white;
+  font-weight: bold;
+  color: white;
 }
 
 .text-impact-phrase-highlight-home {
-    color: var(--secundariaEscuro);
+  color: var(--secundariaEscuro);
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 105px);
 }
 
 .container-header-home {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  flex-shrink: 0;
 }
 
 .text-welcome-home {
-    color: white;
-    font-weight: bold;
+  color: white;
+  font-weight: bold;
 }
 
 .dashboard-grid-home {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto auto;
   gap: 1rem;
   padding: 1rem;
   font-size: 22px;
+  overflow: auto;
 }
 
 .card-dashboard-home {
