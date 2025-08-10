@@ -2,33 +2,69 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import './CreateClient.css';
 import { API_BACKEND_URL } from '../../../constants/url';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const diasDaSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
 const CreateClient = () => {
-    const [form, setForm] = useState({
-        nome: '',
-        cpf: '',
-        nascimento: '',
-        status: '',
-        email: '',
-        telefone: '',
-        cep: '',
-        logradouro: '',
-        bairro: '',
-        cidade: '',
-        complemento: '',
-        estado: '',
-        diasDeTreino: [],
-        modalidade: '',
-        plano: '',
-        emergenciaNome: '',
-        emergenciaTelefone: '',
-        limitacaoFisica: '',
-        cirurgia: '',
-        problemaArticular: '',
-        praticaAtividade: '',
+    const location = useLocation();
+    const navigate = useNavigate();
+    const clienteParaEditar = location.state?.client;
+    const [form, setForm] = useState(() => {
+        if (clienteParaEditar) {
+            return {
+                id: clienteParaEditar.id || '',
+                nome: clienteParaEditar.nome || '',
+                cpf: clienteParaEditar.cpf || '',
+                nascimento: clienteParaEditar.nascimento
+                    ? clienteParaEditar.nascimento.split('T')[0]
+                    : '',
+                status: clienteParaEditar.status || '',
+                email: clienteParaEditar.email || '',
+                telefone: clienteParaEditar.telefone || '',
+                cep: clienteParaEditar.cep || '',
+                logradouro: clienteParaEditar.logradouro || '',
+                bairro: clienteParaEditar.bairro || '',
+                cidade: clienteParaEditar.cidade || '',
+                complemento: clienteParaEditar.complemento || '',
+                estado: clienteParaEditar.estado || '',
+                emergencia_nome: clienteParaEditar.emergencia_nome || '',
+                emergencia_telefone: clienteParaEditar.emergencia_telefone || '',
+                limitacao_fisica: clienteParaEditar.limitacao_fisica || '',
+                cirurgia: clienteParaEditar.cirurgia || '',
+                problema_articular: clienteParaEditar.problema_articular || '',
+                pratica_atividade: clienteParaEditar.pratica_atividade || '',
+                dias_de_treino: clienteParaEditar.dias_de_treino || [],
+                modalidade: clienteParaEditar.modalidade || '',
+                plano: clienteParaEditar.plano || '',
+            };
+        }
+        return {
+            id: '',
+            nome: '',
+            cpf: '',
+            nascimento: '',
+            status: '',
+            email: '',
+            telefone: '',
+            cep: '',
+            logradouro: '',
+            bairro: '',
+            cidade: '',
+            complemento: '',
+            estado: '',
+            emergencia_nome: '',
+            emergencia_telefone: '',
+            limitacao_fisica: '',
+            cirurgia: '',
+            problema_articular: '',
+            pratica_atividade: '',
+            dias_de_treino: [],
+            modalidade: '',
+            plano: '',
+        };
     });
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,29 +72,35 @@ const CreateClient = () => {
     };
 
     const handleDiaChange = (dia) => {
-        const selecionados = form.diasDeTreino.includes(dia)
-            ? form.diasDeTreino.filter(d => d !== dia)
-            : [...form.diasDeTreino, dia];
+        const selecionados = form.dias_de_treino.includes(dia)
+            ? form.dias_de_treino.filter(d => d !== dia)
+            : [...form.dias_de_treino, dia];
 
-        setForm({ ...form, diasDeTreino: selecionados });
+        setForm({ ...form, dias_de_treino: selecionados });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const payload = {
             ...form,
-            dias_de_treino: form.diasDeTreino,
+            dias_de_treino: form.dias_de_treino,
         };
-        delete payload.diasDeTreino;
+        delete payload.dias_de_treino;
+
+        const method = payload.id ? 'PUT' : 'POST';
+        const url = payload.id
+            ? `${API_BACKEND_URL}/api/clientes/${payload.id}`
+            : `${API_BACKEND_URL}/api/clientes`;
+
 
         try {
-            const response = await fetch(`${API_BACKEND_URL}/api/clientes`, {
-                method: 'POST',
+            const response = await fetch(url, {
+                method,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) {
@@ -66,10 +108,9 @@ const CreateClient = () => {
                 throw new Error(data.error || 'Erro ao salvar cliente');
             }
 
-            const data = await response.json();
             toast.success('Cliente salvo com sucesso!');
-            console.log('Cliente salvo:', data.cliente);
-            
+            navigate('/listClients');
+
             setForm({
                 nome: '',
                 cpf: '',
@@ -89,7 +130,7 @@ const CreateClient = () => {
                 cirurgia: '',
                 problema_articular: '',
                 pratica_atividade: '',
-                diasDeTreino: [],
+                dias_de_treino: [],
                 modalidade: '',
                 plano: '',
             });
@@ -121,22 +162,22 @@ const CreateClient = () => {
             <input type="text" name="estado" placeholder="Estado" value={form.estado} onChange={handleChange} />
             <input
                 type="text"
-                name="emergenciaNome"
+                name="emergencia_nome"
                 placeholder="Nome para contato de emergência"
-                value={form.emergenciaNome}
+                value={form.emergencia_nome}
                 onChange={handleChange}
             />
             <input
                 type="tel"
-                name="emergenciaTelefone"
+                name="emergencia_telefone"
                 placeholder="Telefone para contato de emergência"
-                value={form.emergenciaTelefone}
+                value={form.emergencia_telefone}
                 onChange={handleChange}
             />
             <textarea
-                name="limitacaoFisica"
+                name="limitacao_fisica"
                 placeholder="Possui alguma limitação física ou lesão atual?"
-                value={form.limitacaoFisica}
+                value={form.limitacao_fisica}
                 onChange={handleChange}
                 rows={3}
             />
@@ -148,16 +189,16 @@ const CreateClient = () => {
                 rows={3}
             />
             <textarea
-                name="problemaArticular"
+                name="problema_articular"
                 placeholder="Tem algum problema articular ou ósseo que poderia piorar com atividade física?"
-                value={form.problemaArticular}
+                value={form.problema_articular}
                 onChange={handleChange}
                 rows={3}
             />
             <textarea
-                name="praticaAtividade"
+                name="pratica_atividade"
                 placeholder="Já pratica ou praticou atividade física? (qual e com que frequência)"
-                value={form.praticaAtividade}
+                value={form.pratica_atividade}
                 onChange={handleChange}
                 rows={3}
             />
@@ -168,7 +209,7 @@ const CreateClient = () => {
                     <label key={dia}>
                         <input
                             type="checkbox"
-                            checked={form.diasDeTreino.includes(dia)}
+                            checked={form.dias_de_treino.includes(dia)}
                             onChange={() => handleDiaChange(dia)}
                         />
                         <span>{dia}</span>

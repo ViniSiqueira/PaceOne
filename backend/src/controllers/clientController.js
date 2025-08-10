@@ -1,32 +1,32 @@
 const pool = require('../config/db');
 
 const salvarCliente = async (req, res) => {
-  const {
-    nome,
-    cpf,
-    nascimento,
-    status,
-    email,
-    telefone,
-    cep,
-    logradouro,
-    bairro,
-    cidade,
-    complemento,
-    estado,
-    emergencia_nome,
-    emergencia_telefone,
-    limitacao_fisica,
-    cirurgia,
-    problema_articular,
-    pratica_atividade,
-    dias_de_treino,
-    modalidade,
-    plano,
-  } = req.body;
+    const {
+        nome,
+        cpf,
+        nascimento,
+        status,
+        email,
+        telefone,
+        cep,
+        logradouro,
+        bairro,
+        cidade,
+        complemento,
+        estado,
+        emergencia_nome,
+        emergencia_telefone,
+        limitacao_fisica,
+        cirurgia,
+        problema_articular,
+        pratica_atividade,
+        dias_de_treino,
+        modalidade,
+        plano,
+    } = req.body;
 
-  try {
-    const query = `
+    try {
+        const query = `
       INSERT INTO cliente (
         nome, cpf, nascimento, status, email, telefone,
         cep, logradouro, bairro, cidade, complemento, estado,
@@ -44,32 +44,62 @@ const salvarCliente = async (req, res) => {
       RETURNING *;
     `;
 
-    const values = [
-      nome, cpf, nascimento, status, email, telefone,
-      cep, logradouro, bairro, cidade, complemento, estado,
-      emergencia_nome, emergencia_telefone,
-      limitacao_fisica, cirurgia, problema_articular,
-      pratica_atividade, dias_de_treino, modalidade, plano,
-    ];
+        const values = [
+            nome, cpf, nascimento, status, email, telefone,
+            cep, logradouro, bairro, cidade, complemento, estado,
+            emergencia_nome, emergencia_telefone,
+            limitacao_fisica, cirurgia, problema_articular,
+            pratica_atividade, dias_de_treino, modalidade, plano,
+        ];
 
-    const result = await pool.query(query, values);
+        const result = await pool.query(query, values);
 
-    res.status(201).json({ message: 'Cliente salvo com sucesso!', cliente: result.rows[0] });
-  } catch (error) {
-    console.error('Erro ao salvar cliente:', error);
-    res.status(500).json({ error: 'Erro interno ao salvar cliente' });
-  }
+        res.status(201).json({ message: 'Cliente salvo com sucesso!', cliente: result.rows[0] });
+    } catch (error) {
+        console.error('Erro ao salvar cliente:', error);
+        res.status(500).json({ error: 'Erro interno ao salvar cliente' });
+    }
 };
 
 const listClients = async (req, res) => {
-  try {
-    const query = 'SELECT * FROM cliente ORDER BY id';
-    const result = await pool.query(query);
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Erro ao buscar clientes:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
-  }
+    try {
+        const query = 'SELECT * FROM cliente ORDER BY id';
+        const result = await pool.query(query);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Erro ao buscar clientes:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
 };
 
-module.exports = { salvarCliente, listClients };
+const atualizarCliente = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const campos = req.body;
+        
+        const keys = Object.keys(campos);
+        const values = Object.values(campos);
+
+        if (keys.length === 0) {
+            return res.status(400).json({ error: 'Nenhum dado enviado para atualização' });
+        }
+
+        const setClause = keys.map((key, index) => `${key} = $${index + 1}`).join(', ');
+
+        const result = await pool.query(
+            `UPDATE cliente SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`,
+            [...values, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Cliente não encontrado' });
+        }
+
+        res.json({ cliente: result.rows[0] });
+    } catch (error) {
+        console.error('Erro ao atualizar cliente:', error);
+        res.status(500).json({ error: 'Erro ao atualizar cliente' });
+    }
+};
+
+module.exports = { salvarCliente, listClients, atualizarCliente };
