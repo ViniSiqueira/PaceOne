@@ -76,7 +76,7 @@ const atualizarCliente = async (req, res) => {
     try {
         const { id } = req.params;
         const campos = req.body;
-        
+
         const keys = Object.keys(campos);
         const values = Object.values(campos);
 
@@ -102,4 +102,18 @@ const atualizarCliente = async (req, res) => {
     }
 };
 
-module.exports = { salvarCliente, listClients, atualizarCliente };
+const getClientesStatusCount = async (req, res) => {
+    try {
+        const result = await pool.query(`
+      SELECT status, COUNT(*) AS total
+      FROM cliente
+      GROUP BY status
+    `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Erro ao buscar status dos clientes:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+};
+
+module.exports = { salvarCliente, listClients, atualizarCliente, getClientesStatusCount };
