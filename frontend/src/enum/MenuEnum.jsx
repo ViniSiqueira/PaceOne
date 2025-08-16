@@ -4,7 +4,7 @@ import { MdDirectionsBike } from "react-icons/md";
 export const MenuEnum = [
     {
         label: 'Modalidades',
-        path: '/home',
+        path: '/listModality',
         icon: <MdDirectionsBike />
     },
     {

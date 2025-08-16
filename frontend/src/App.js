@@ -10,6 +10,8 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import ListClients from './pages/Clients/List/ListClients';
 import CreateClient from './pages/Clients/Create/CreateClient';
+import ListModality from './pages/Modality/List/ListModality';
+import CreateModality from './pages/Modality/Create/CreateModality';
 
 function App() {
   return (
@@ -19,36 +21,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/home"
-            element={
-              <PrivateRoute>
-                <DefaultLayout>
-                  <Home />
-                </DefaultLayout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/listClients"
-            element={
-              <PrivateRoute>
-                <DefaultLayout>
-                  <ListClients />
-                </DefaultLayout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/createClient"
-            element={
-              <PrivateRoute>
-                <DefaultLayout>
-                  <CreateClient />
-                </DefaultLayout>
-              </PrivateRoute>
-            }
-          />
+          <Route element={<PrivateRoute><DefaultLayout /></PrivateRoute>}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/listClients" element={<ListClients />} />
+            <Route path="/createClient" element={<CreateClient />} />
+            <Route path="/listModality" element={<ListModality />} />
+            <Route path="/createModality" element={<CreateModality />} />
+          </Route>
         </Routes>
       </Router>
     </>

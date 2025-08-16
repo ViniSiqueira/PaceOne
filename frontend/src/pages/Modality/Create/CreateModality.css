@@ -1,0 +1,23 @@
+.icon-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.icon-option {
+    font-size: 2rem;
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.icon-option:hover {
+    border-color: #ccc;
+}
+
+.icon-option.selected {
+    border-color: #007bff;
+    background-color: #e9f5ff;
+}
