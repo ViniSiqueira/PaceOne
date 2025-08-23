@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import './CreateTraining.css';
 import { API_BACKEND_URL } from '../../../constants/url';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const CreateTraining = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const trainingToEdit = location.state?.treino;
     const [clients, setClients] = useState([]);
-    const [form, setForm] = useState({
-        cliente_id: '',
-        intensidade: '',
-        tempo_treino: '',
-        tipo_treino: '',
-        descricao: '',
-    });
+    const [form, setForm] = useState(() => ({
+        id: trainingToEdit?.id || '',
+        intensidade: trainingToEdit?.intensidade || '',
+        tempo_treino: trainingToEdit?.tempo_treino || '',
+        tipo_treino: trainingToEdit?.tipo_treino || '',
+        descricao: trainingToEdit?.descricao || '',
+        cliente_id: trainingToEdit?.cliente_id || '',
+    }));
 
     useEffect(() => {
         const fetchClients = async () => {
@@ -125,7 +128,7 @@ const CreateTraining = () => {
                 <option value="Preparação Física">Preparação Física</option>
                 <option value="Outros">Outros</option>
             </select>
-            
+
             <textarea
                 name="descricao"
                 placeholder="Descrição do treino..."
