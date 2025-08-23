@@ -1,7 +1,13 @@
 import { FaCalendarAlt, FaDumbbell, FaMoneyBillAlt, FaTools, FaUsers } from "react-icons/fa";
+import { IoHome } from "react-icons/io5";
 import { MdDirectionsBike } from "react-icons/md";
 
 export const MenuEnum = [
+    {
+        label: 'Home',
+        path: '/home',
+        icon: <IoHome />
+    },
     {
         label: 'Modalidades',
         path: '/listModality',
@@ -9,7 +15,7 @@ export const MenuEnum = [
     },
     {
         label: 'Treinos',
-        path: '/home',
+        path: '/listTraining',
         icon: <FaDumbbell />
     },
     {
@@ -19,7 +25,7 @@ export const MenuEnum = [
     },
     {
         label: 'Financeiro',
-        path: '/home',
+        path: '/financial',
         icon: <FaMoneyBillAlt />
     },
     {
@@ -27,9 +33,9 @@ export const MenuEnum = [
         path: '/home',
         icon: <FaCalendarAlt />
     },
-    {
-        label: 'Configurações',
-        path: '/home',
-        icon: <FaTools />
-    }
+    // {
+    //     label: 'Configurações',
+    //     path: '/home',
+    //     icon: <FaTools />
+    // }
 ];

@@ -12,6 +12,9 @@ import ListClients from './pages/Clients/List/ListClients';
 import CreateClient from './pages/Clients/Create/CreateClient';
 import ListModality from './pages/Modality/List/ListModality';
 import CreateModality from './pages/Modality/Create/CreateModality';
+import Financeiro from './pages/Financial/Financeiro';
+import ListTraining from './pages/Training/List/ListTraining';
+import CreateTraining from './pages/Training/Create/CreateTraining';
 
 function App() {
   return (
@@ -25,8 +28,11 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/listClients" element={<ListClients />} />
             <Route path="/createClient" element={<CreateClient />} />
-            <Route path="/listModality" element={<ListModality />} />
+            <Route path="/listModality" element={<ListModality />} />            
             <Route path="/createModality" element={<CreateModality />} />
+            <Route path="/listTraining" element={<ListTraining />} />
+            <Route path="/createTraining" element={<CreateTraining />} />
+            <Route path="/financial" element={<Financeiro />} />
           </Route>
         </Routes>
       </Router>

@@ -1,0 +1,11 @@
+
+CREATE TABLE treino (
+    id SERIAL PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    intensidade VARCHAR(50),
+    tempo_treino VARCHAR(20),
+    tipo_treino VARCHAR(50),
+    descricao TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE
+);

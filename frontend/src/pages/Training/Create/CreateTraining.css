@@ -1,0 +1,52 @@
+
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.form-container h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.form-container select,
+.form-container input,
+.form-container textarea {
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-container select:focus,
+.form-container input:focus,
+.form-container textarea:focus {
+    border-color: var(--secundariaEscuro);
+}
+
+.form-container button {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    background: var(--secundariaEscuro);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.form-container button:hover {
+    background: #0d4f6f;
+}
