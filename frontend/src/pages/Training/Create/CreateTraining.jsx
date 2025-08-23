@@ -9,6 +9,7 @@ const CreateTraining = () => {
     const location = useLocation();
     const trainingToEdit = location.state?.treino;
     const [clients, setClients] = useState([]);
+    const isEdit = Boolean(trainingToEdit?.id);
     const [form, setForm] = useState(() => ({
         id: trainingToEdit?.id || '',
         intensidade: trainingToEdit?.intensidade || '',
@@ -41,13 +42,20 @@ const CreateTraining = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch(`${API_BACKEND_URL}/api/treinos`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(form),
+
+        try {            
+            const { id, ...body } = form;
+
+            const url = isEdit
+                ? `${API_BACKEND_URL}/api/treinos/${form.id}`
+                : `${API_BACKEND_URL}/api/treinos`;
+
+            const method = isEdit ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
             });
 
             if (!response.ok) {
@@ -55,20 +63,26 @@ const CreateTraining = () => {
                 throw new Error(data.error || 'Erro ao salvar treino');
             }
 
-            toast.success('Treino salvo com sucesso!');
+            toast.success(isEdit ? 'Treino atualizado com sucesso!' : 'Treino salvo com sucesso!');
+            
             navigate('/listTraining');
-            setForm({
-                cliente_id: '',
-                intensidade: '',
-                tempo_treino: '',
-                tipo_treino: '',
-                descricao: '',
-            });
+
+            if (!isEdit) {
+                setForm({
+                    id: '',
+                    cliente_id: '',
+                    intensidade: '',
+                    tempo_treino: '',
+                    tipo_treino: '',
+                    descricao: '',
+                });
+            }
         } catch (error) {
             toast.error(error.message);
-            console.error('Erro ao salvar treino:', error);
+            console.error('Erro ao salvar/atualizar treino:', error);
         }
     };
+
 
     return (
         <form className="form-container" onSubmit={handleSubmit}>
