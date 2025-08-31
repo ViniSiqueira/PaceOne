@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="header">
       <h3 className='text-header'>Sistema de gestão</h3>
-      <div className='header-content'>
+      {/* <div className='header-content'>
         <div className='header-notification'>
           <IoMdNotifications className='header-icon-notification' size={28} />
           <Badge className='header-badge-notification' value="5"></Badge>
@@ -17,7 +17,7 @@ const Header = () => {
         <div>
           <Avatar image={user} size="large" shape="circle" />
         </div>
-      </div>
+      </div> */}
     </header>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ListModality.css';
 import { useNavigate } from 'react-router-dom';
 import { API_BACKEND_URL } from '../../../constants/url';
+import * as FaIcons from 'react-icons/fa';
 
 const ListModality = () => {
     const navigate = useNavigate();
@@ -49,8 +50,8 @@ const ListModality = () => {
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Ícone</th>
                             <th>Descrição</th>
+                            <th>Ícone</th>                            
                             <th>Cor do Ícone</th>
                         </tr>
                     </thead>
@@ -69,17 +70,12 @@ const ListModality = () => {
                                     style={{ cursor: 'pointer' }}
                                 >
                                     <td>{modality.id}</td>
-                                    <td>
-                                        <span
-                                            style={{
-                                                fontSize: '1.5rem',
-                                                color: modality.cor_icon || '#000'
-                                            }}
-                                        >
-                                            {modality.icone}
-                                        </span>
-                                    </td>
                                     <td>{modality.descricao}</td>
+                                    <td>
+                                        <span style={{ fontSize: '1.5rem', color: modality.cor_icon || '#000' }}>
+                                            {FaIcons[modality.icone] ? React.createElement(FaIcons[modality.icone]) : null}
+                                        </span>
+                                    </td>                                    
                                     <td>
                                         <span
                                             style={{

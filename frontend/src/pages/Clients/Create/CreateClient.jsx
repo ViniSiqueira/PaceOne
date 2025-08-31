@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import './CreateClient.css';
 import { API_BACKEND_URL } from '../../../constants/url';
@@ -9,6 +9,7 @@ const diasDaSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado
 const CreateClient = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [modalidades, setModalidades] = useState([]);
     const clienteParaEditar = location.state?.client;
     const [form, setForm] = useState(() => {
         if (clienteParaEditar) {
@@ -65,6 +66,21 @@ const CreateClient = () => {
         };
     });
 
+    useEffect(() => {
+        const fetchModalidades = async () => {
+            try {
+                const response = await fetch(`${API_BACKEND_URL}/api/modalidades`);
+                if (!response.ok) throw new Error('Erro ao buscar modalidades');
+                const data = await response.json();
+                setModalidades(data);
+            } catch (error) {
+                console.error(error);
+                setModalidades([]);
+            }
+        };
+
+        fetchModalidades();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -85,8 +101,7 @@ const CreateClient = () => {
         const payload = {
             ...form,
             dias_de_treino: form.dias_de_treino,
-        };
-        delete payload.dias_de_treino;
+        };        
 
         const method = payload.id ? 'PUT' : 'POST';
         const url = payload.id
@@ -219,10 +234,9 @@ const CreateClient = () => {
 
             <select name="modalidade" value={form.modalidade} onChange={handleChange} required>
                 <option value="">Selecione a modalidade</option>
-                <option value="Musculação">Musculação</option>
-                <option value="Crossfit">Crossfit</option>
-                <option value="Pilates">Pilates</option>
-                <option value="Funcional">Funcional</option>
+                {modalidades.map((mod) => (
+                    <option key={mod.id} value={mod.descricao}>{mod.descricao}</option>
+                ))}
             </select>
 
             <select name="plano" value={form.plano} onChange={handleChange} required>

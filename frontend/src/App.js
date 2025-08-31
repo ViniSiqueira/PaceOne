@@ -15,6 +15,7 @@ import CreateModality from './pages/Modality/Create/CreateModality';
 import Financeiro from './pages/Financial/Financeiro';
 import ListTraining from './pages/Training/List/ListTraining';
 import CreateTraining from './pages/Training/Create/CreateTraining';
+import Routine from './pages/Routine/Routine';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/listTraining" element={<ListTraining />} />
             <Route path="/createTraining" element={<CreateTraining />} />
             <Route path="/financial" element={<Financeiro />} />
+            <Route path="/routine" element={<Routine />} />
           </Route>
         </Routes>
       </Router>

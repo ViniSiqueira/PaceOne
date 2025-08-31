@@ -1,0 +1,47 @@
+.routine-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.routine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.routine-events-title {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.routine-events-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.routine-events-list li {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.routine-event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 10px;
+}
+
+.routine-event-info {
+    flex: 1;
+}

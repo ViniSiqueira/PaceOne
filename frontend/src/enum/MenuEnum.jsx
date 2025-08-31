@@ -30,7 +30,7 @@ export const MenuEnum = [
     },
     {
         label: 'Rotina',
-        path: '/home',
+        path: '/routine',
         icon: <FaCalendarAlt />
     },
     // {
