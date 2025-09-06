@@ -10,6 +10,38 @@
     margin-bottom: 15px;
 }
 
+.routine-calendar-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .08);
+}
+
+/* indicadores de eventos no tile do calendário */
+.rc-dots {
+    display: flex;
+    gap: 2px;
+    flex-wrap: nowrap;
+    margin-top: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.rc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3f51b5;
+    /* cor do ponto do evento */
+    display: inline-block;
+}
+
+.rc-more {
+    font-size: 10px;
+    margin-left: 2px;
+    color: #555;
+}
+
 .routine-events-title {
     margin-top: 20px;
     font-weight: bold;
@@ -27,7 +59,7 @@
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
 }
 
 .routine-event-item {
@@ -38,10 +70,20 @@
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
     gap: 10px;
 }
 
 .routine-event-info {
     flex: 1;
+}
+
+/* opcional: melhora o tile selecionado / hoje do react-calendar */
+.react-calendar__tile--active {
+    background: #3f51b5 !important;
+    color: #fff !important;
+}
+
+.react-calendar__tile--now {
+    background: rgba(63, 81, 181, .08) !important;
 }
