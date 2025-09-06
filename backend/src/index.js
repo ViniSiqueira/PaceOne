@@ -6,6 +6,7 @@ const clientRoutes = require('./routes/clientRoutes');
 const modalityRoutes = require('./routes/modalityRoutes');
 const trainingRoutes = require('./routes/trainingRoutes');
 const routineRoutes = require('./routes/routineRoutes');
+const financeiroRoutes = require('./routes/financeiroRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api', clientRoutes);
 app.use('/api', modalityRoutes);
 app.use('/api', trainingRoutes);
 app.use('/api', routineRoutes);
+app.use('/api', financeiroRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

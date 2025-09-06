@@ -1,120 +1,227 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Financeiro.css';
+import ModalTitulo from './ModalTitulo';
+import toast from 'react-hot-toast';
 import { API_BACKEND_URL } from '../../constants/url';
 
 const Financeiro = () => {
-    const [contasPagar, setContasPagar] = useState([]);
-    const [contasReceber, setContasReceber] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [aba, setAba] = useState('pagar');
+    const [modalAberto, setModalAberto] = useState(false);
+    const [titulosPagar, setTitulosPagar] = useState([]);
+    const [titulosReceber, setTitulosReceber] = useState([]);
+    const [mesFiltro, setMesFiltro] = useState(new Date().toISOString().slice(0,7)); // YYYY-MM
 
-    // Totais
-    const totalPagar = contasPagar.reduce((acc, c) => acc + parseFloat(c.valor || 0), 0);
-    const totalReceber = contasReceber.reduce((acc, c) => acc + parseFloat(c.valor || 0), 0);
-    const saldo = totalReceber - totalPagar;
+    const [fluxoCaixa, setFluxoCaixa] = useState({
+        totalEntrada: 0,
+        totalSaida: 0,
+        saldo: 0
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [pagarRes, receberRes] = await Promise.all([
-                    fetch(`${API_BACKEND_URL}/api/contasPagar`),
-                    fetch(`${API_BACKEND_URL}/api/contasReceber`)
-                ]);
-
-                const pagarData = await pagarRes.json();
-                const receberData = await receberRes.json();
-
-                setContasPagar(pagarData);
-                setContasReceber(receberData);
-            } catch (error) {
-                console.error('Erro ao buscar dados financeiros:', error);
-                setContasPagar([]);
-                setContasReceber([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+        fetchTitulos();
     }, []);
+
+    useEffect(() => {
+        calcularFluxo();
+    }, [titulosPagar, titulosReceber, mesFiltro]);
+
+    const fetchTitulos = async () => {
+        try {
+            const [pagarRes, receberRes] = await Promise.all([
+                fetch(`${API_BACKEND_URL}/api/financeiro/pagar`),
+                fetch(`${API_BACKEND_URL}/api/financeiro/receber`)
+            ]);
+            const [pagarData, receberData] = await Promise.all([pagarRes.json(), receberRes.json()]);
+            setTitulosPagar(pagarData);
+            setTitulosReceber(receberData);
+        } catch (err) {
+            console.error(err);
+            toast.error('Erro ao carregar títulos');
+        }
+    };
+
+    const abrirModal = () => setModalAberto(true);
+    const fecharModal = () => setModalAberto(false);
+
+    const adicionarTitulo = async (titulo) => {
+        try {
+            const url = `${API_BACKEND_URL}/api/financeiro/${aba}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(titulo)
+            });
+            if (!res.ok) throw new Error('Erro ao salvar título');
+            const novoTitulo = await res.json();
+            aba === 'pagar'
+                ? setTitulosPagar([...titulosPagar, novoTitulo])
+                : setTitulosReceber([...titulosReceber, novoTitulo]);
+            toast.success('Título salvo com sucesso!');
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message);
+        }
+    };
+
+    const alterarStatus = async (id, status, tipo) => {
+        try {
+            const url = `${API_BACKEND_URL}/api/financeiro/${tipo}/${id}`;
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            if (!res.ok) throw new Error('Erro ao atualizar status');
+            if (tipo === 'pagar') {
+                setTitulosPagar(titulosPagar.map(t => t.id === id ? { ...t, status } : t));
+            } else {
+                setTitulosReceber(titulosReceber.map(t => t.id === id ? { ...t, status } : t));
+            }
+            toast.success('Status atualizado!');
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message);
+        }
+    };
+
+    const excluirTitulo = async (id, tipo) => {
+        try {
+            const url = `${API_BACKEND_URL}/api/financeiro/${tipo}/${id}`;
+            const res = await fetch(url, { method: 'DELETE' });
+            if (!res.ok) throw new Error('Erro ao excluir título');
+            if (tipo === 'pagar') {
+                setTitulosPagar(titulosPagar.filter(t => t.id !== id));
+            } else {
+                setTitulosReceber(titulosReceber.filter(t => t.id !== id));
+            }
+            toast.success('Título excluído!');
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message);
+        }
+    };
+
+    const titulosFiltradosPorMes = (titulos, tipoData) => {
+        return titulos.filter(t => t[tipoData]?.startsWith(mesFiltro));
+    };
+
+    const calcularFluxo = () => {
+        const entradas = titulosFiltradosPorMes(titulosReceber, 'data_recebimento')
+            .reduce((sum, t) => sum + Number(t.valor || 0), 0);
+        const saidas = titulosFiltradosPorMes(titulosPagar, 'data_pagamento')
+            .reduce((sum, t) => sum + Number(t.valor || 0), 0);
+        setFluxoCaixa({
+            totalEntrada: entradas,
+            totalSaida: saidas,
+            saldo: entradas - saidas
+        });
+    };
+
+    const titulosAtuais = aba === 'pagar' ? titulosFiltradosPorMes(titulosPagar, 'vencimento') : aba === 'receber' ? titulosFiltradosPorMes(titulosReceber, 'vencimento') : [];
 
     return (
         <div className="financeiro-container">
             <h2>Financeiro</h2>
 
-            {/* Cards de resumo */}
-            <div className="financeiro-resumo">
-                <div className="card resumo-pagar">
-                    <h3>Total a Pagar</h3>
-                    <p>R$ {totalPagar.toFixed(2)}</p>
-                </div>
-                <div className="card resumo-receber">
-                    <h3>Total a Receber</h3>
-                    <p>R$ {totalReceber.toFixed(2)}</p>
-                </div>
-                <div className="card resumo-saldo">
-                    <h3>Saldo</h3>
-                    <p>R$ {saldo.toFixed(2)}</p>
-                </div>
+            <div className="aba-buttons">
+                <button className={aba === 'pagar' ? 'active' : ''} onClick={() => setAba('pagar')}>A Pagar</button>
+                <button className={aba === 'receber' ? 'active' : ''} onClick={() => setAba('receber')}>A Receber</button>
+                <button className={aba === 'fluxo' ? 'active' : ''} onClick={() => setAba('fluxo')}>Fluxo de Caixa</button>
             </div>
 
-            {loading ? (
-                <p>Carregando dados financeiros...</p>
-            ) : (
+            <div style={{ marginBottom: '15px', display: 'flex', justifyContent: 'flex-end', gap: '10px', alignItems: 'center' }}>
+                {(aba === 'pagar' || aba === 'receber' || aba === 'fluxo') && (
+                    <>
+                        <label>Mês: </label>
+                        <input
+                            type="month"
+                            value={mesFiltro}
+                            onChange={(e) => setMesFiltro(e.target.value)}
+                        />
+                    </>
+                )}
+            </div>
+
+            {(aba === 'pagar' || aba === 'receber') && (
                 <>
-                    {/* Contas a Pagar */}
-                    <h3>Contas a Pagar</h3>
-                    <table className="financeiro-table">
+                    <div className="form-titulo">
+                        <button type="button" onClick={abrirModal}>+ Novo Título</button>
+                    </div>
+
+                    <table className="titulos-table">
                         <thead>
                             <tr>
                                 <th>Descrição</th>
+                                <th>Vencimento</th>
+                                <th>Data Pag/Rec</th>
                                 <th>Valor</th>
-                                <th>Data de Vencimento</th>
+                                <th>Juros</th>
+                                <th>Acrescimo</th>
+                                <th>Desconto</th>
                                 <th>Status</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {contasPagar.length === 0 ? (
-                                <tr><td colSpan="4">Nenhuma conta a pagar.</td></tr>
-                            ) : (
-                                contasPagar.map(c => (
-                                    <tr key={c.id}>
-                                        <td>{c.descricao}</td>
-                                        <td>R$ {parseFloat(c.valor).toFixed(2)}</td>
-                                        <td>{new Date(c.vencimento).toLocaleDateString()}</td>
-                                        <td>{c.status}</td>
-                                    </tr>
-                                ))
+                            {titulosAtuais.map((titulo) => (
+                                <tr key={titulo.id}>
+                                    <td>{titulo.descricao}</td>
+                                    <td>{titulo.vencimento}</td>
+                                    <td>{aba === 'pagar' ? titulo.data_pagamento || '-' : titulo.data_recebimento || '-'}</td>
+                                    <td>{titulo.valor}</td>
+                                    <td>{titulo.juros}</td>
+                                    <td>{titulo.acrescimo}</td>
+                                    <td>{titulo.desconto}</td>
+                                    <td>
+                                        <select
+                                            value={titulo.status}
+                                            onChange={(e) => alterarStatus(titulo.id, e.target.value, aba)}
+                                        >
+                                            {aba === 'pagar' ? (
+                                                <>
+                                                    <option value="Aberto">Aberto</option>
+                                                    <option value="Pago">Pago</option>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <option value="Aberto">Aberto</option>
+                                                    <option value="Recebido">Recebido</option>
+                                                </>
+                                            )}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => excluirTitulo(titulo.id, aba)}>Excluir</button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {titulosAtuais.length === 0 && (
+                                <tr>
+                                    <td colSpan="9" style={{ textAlign: 'center' }}>Nenhum título.</td>
+                                </tr>
                             )}
                         </tbody>
                     </table>
 
-                    {/* Contas a Receber */}
-                    <h3>Contas a Receber</h3>
-                    <table className="financeiro-table">
-                        <thead>
-                            <tr>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th>Data de Recebimento</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {contasReceber.length === 0 ? (
-                                <tr><td colSpan="4">Nenhuma conta a receber.</td></tr>
-                            ) : (
-                                contasReceber.map(c => (
-                                    <tr key={c.id}>
-                                        <td>{c.descricao}</td>
-                                        <td>R$ {parseFloat(c.valor).toFixed(2)}</td>
-                                        <td>{new Date(c.dataRecebimento).toLocaleDateString()}</td>
-                                        <td>{c.status}</td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                    {modalAberto && (
+                        <ModalTitulo
+                            onClose={fecharModal}
+                            onSalvar={adicionarTitulo}
+                            tipo={aba}
+                        />
+                    )}
                 </>
+            )}
+
+            {aba === 'fluxo' && (
+                <div className="fluxo-caixa">
+                    <h3>Fluxo de Caixa</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
+                        <div>Total a Receber: R$ {fluxoCaixa.totalEntrada.toFixed(2)}</div>
+                        <div>Total a Pagar: R$ {fluxoCaixa.totalSaida.toFixed(2)}</div>
+                        <div>Saldo: R$ {fluxoCaixa.saldo.toFixed(2)}</div>
+                    </div>
+                </div>
             )}
         </div>
     );

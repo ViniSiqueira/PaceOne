@@ -1,50 +1,126 @@
+/* Financeiro.css */
+
+/* Container principal e tabelas já enviados antes */
 .financeiro-container {
+    max-width: 1200px;
+    margin: 20px auto;
     padding: 20px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    max-width: 1000px;
-    margin: 40px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-.financeiro-resumo {
+.aba-buttons {
     display: flex;
-    gap: 20px;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
-.card {
-    flex: 1;
-    padding: 20px;
-    border-radius: 12px;
-    color: white;
+.aba-buttons button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: 0.2s;
     font-weight: bold;
+}
+
+.aba-buttons button.active {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.form-titulo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.form-titulo input,
+.form-titulo select,
+.form-titulo button {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-titulo button {
+    background-color: #4caf50;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.form-titulo button:hover {
+    background-color: #45a049;
+}
+
+.titulos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.titulos-table th,
+.titulos-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
     text-align: center;
 }
 
-.resumo-pagar { background: #e74c3c; } /* vermelho */
-.resumo-receber { background: #2ecc71; } /* verde */
-.resumo-saldo { background: #3498db; } /* azul */
-
-.financeiro-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
+.titulos-table th {
+    background-color: #f4f4f4;
 }
 
-.financeiro-table th,
-.financeiro-table td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+.titulos-table tr:nth-child(even) {
+    background-color: #fafafa;
 }
 
-.financeiro-table thead {
-    background: #f1f1f1;
-    font-weight: 600;
+.titulos-table tr:hover {
+    background-color: #f1f1f1;
 }
 
-h3 {
-    margin-top: 30px;
-    margin-bottom: 10px;
+.titulos-table button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #f44336;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.titulos-table button:hover {
+    background-color: #d32f2f;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
