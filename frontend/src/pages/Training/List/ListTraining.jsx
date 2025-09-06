@@ -54,28 +54,37 @@ const ListTraining = () => {
                             <th>Tempo</th>
                             <th>Tipo</th>
                             <th>Descrição</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {treinos.length === 0 ? (
                             <tr>
-                                <td colSpan="6" style={{ textAlign: 'center' }}>
-                                    Nenhum treino encontrado.
-                                </td>
+                                <td colSpan="7" style={{ textAlign: 'center' }}>Nenhum treino encontrado.</td>
                             </tr>
                         ) : (
                             treinos.map((treino) => (
-                                <tr
-                                    key={treino.id}
-                                    onClick={() => handleEditTreino(treino)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <td>{treino.id}</td>
-                                    <td>{treino.cliente_nome}</td>
-                                    <td>{treino.intensidade}</td>
-                                    <td>{treino.tempo_treino}</td>
-                                    <td>{treino.tipo_treino}</td>
-                                    <td>{treino.descricao}</td>
+                                <tr key={treino.id}>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.id}</td>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.cliente_nome}</td>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.intensidade}</td>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.tempo_treino}</td>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.tipo_treino}</td>
+                                    <td onClick={() => handleEditTreino(treino)} style={{ cursor: 'pointer' }}>{treino.descricao}</td>
+                                    <td>
+                                        <button className="btn-delete" onClick={async () => {
+                                            if (window.confirm('Deseja realmente excluir este treino?')) {
+                                                try {
+                                                    const res = await fetch(`${API_BACKEND_URL}/api/treinos/${treino.id}`, { method: 'DELETE' });
+                                                    if (!res.ok) throw new Error('Erro ao excluir treino');
+                                                    setTreinos(treinos.filter(t => t.id !== treino.id));
+                                                } catch (err) {
+                                                    console.error(err);
+                                                    alert(err.message);
+                                                }
+                                            }
+                                        }}>Excluir</button>
+                                    </td>
                                 </tr>
                             ))
                         )}

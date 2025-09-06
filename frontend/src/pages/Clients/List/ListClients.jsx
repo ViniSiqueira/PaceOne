@@ -57,31 +57,42 @@ const ListClients = () => {
                             <th>Plano</th>
                             <th>Modalidade</th>
                             <th>Dias de treino</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {clients.length === 0 ? (
                             <tr>
-                                <td colSpan="9" style={{ textAlign: 'center' }}>
+                                <td colSpan="10" style={{ textAlign: 'center' }}>
                                     Nenhum cliente encontrado.
                                 </td>
                             </tr>
                         ) : (
                             clients.map((client) => (
-                                <tr
-                                    key={client.id}
-                                    onClick={() => handleEditClient(client)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <td>{client.id}</td>
-                                    <td></td>
-                                    <td>{client.nome}</td>
-                                    <td>{new Date(client.nascimento).toLocaleDateString()}</td>
-                                    <td>{client.email}</td>
-                                    <td>{client.telefone}</td>
-                                    <td>{client.plano}</td>
-                                    <td>{client.modalidade}</td>
-                                    <td>{client.dias_de_treino?.join(', ')}</td>
+                                <tr key={client.id}>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.id}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}></td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.nome}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{new Date(client.nascimento).toLocaleDateString()}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.email}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.telefone}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.plano}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.modalidade}</td>
+                                    <td onClick={() => handleEditClient(client)} style={{ cursor: 'pointer' }}>{client.dias_de_treino?.join(', ')}</td>
+                                    <td>
+                                        <button className="btn-delete" onClick={async () => {
+                                            if (window.confirm('Deseja realmente excluir este cliente?')) {
+                                                try {
+                                                    const res = await fetch(`${API_BACKEND_URL}/api/clientes/${client.id}`, { method: 'DELETE' });
+                                                    if (!res.ok) throw new Error('Erro ao excluir cliente');
+                                                    setClients(clients.filter(c => c.id !== client.id));
+                                                } catch (err) {
+                                                    console.error(err);
+                                                    alert(err.message);
+                                                }
+                                            }
+                                        }}>Excluir</button>
+                                    </td>
                                 </tr>
                             ))
                         )}

@@ -83,4 +83,20 @@ const atualizarTreino = async (req, res) => {
     }
 };
 
-module.exports = { salvarTreino, listTreinos, atualizarTreino };
+const deletarTreino = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('DELETE FROM treino WHERE id = $1 RETURNING *', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Treino não encontrado' });
+        }
+
+        res.json({ message: 'Treino excluído com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao deletar treino:', error);
+        res.status(500).json({ error: 'Erro ao deletar treino' });
+    }
+};
+
+module.exports = { salvarTreino, listTreinos, atualizarTreino, deletarTreino};
