@@ -1,126 +1,235 @@
-/* Financeiro.css */
-
-/* Container principal e tabelas já enviados antes */
+/* container branco centralizado */
 .financeiro-container {
-    max-width: 1200px;
-    margin: 20px auto;
+    max-width: 1100px;
+    margin: 24px auto;
     padding: 20px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
+/* abas */
 .aba-buttons {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin: 10px 0 16px;
 }
 
 .aba-buttons button {
-    padding: 10px 20px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 8px;
+    appearance: none;
+    border: 0;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #e8eaed;
+    font-weight: 600;
     cursor: pointer;
-    background-color: #e0e0e0;
-    transition: 0.2s;
-    font-weight: bold;
 }
 
 .aba-buttons button.active {
-    background-color: #4caf50;
+    background: #3f51b5;
     color: #fff;
 }
 
-.form-titulo {
+/* filtro mês */
+.linha-filtro {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.linha-filtro input[type="month"] {
+    padding: 6px 8px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+}
+
+/* cards de resumo no fluxo */
+.cards-resumo {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
 }
 
-.form-titulo input,
-.form-titulo select,
-.form-titulo button {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
+.card-resumo {
+    background: #fff;
+    border: 1px solid #eef1f4;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
 }
 
-.form-titulo button {
-    background-color: #4caf50;
+.card-resumo .card-label {
+    font-size: 13px;
+    color: #6b7785;
+    margin-bottom: 6px;
+}
+
+.card-resumo .card-valor {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.card-resumo.pagar .card-valor {
+    color: #c62828;
+}
+
+.card-resumo.receber .card-valor {
+    color: #2e7d32;
+}
+
+.card-resumo.total .card-valor {
+    color: #455a64;
+}
+
+/* ações topo das listas */
+.acoes-topo {
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 0 12px;
+}
+
+.btn-primary {
+    background: #1976d2;
     color: #fff;
-    font-weight: bold;
-    border: none;
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 12px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.form-titulo button:hover {
-    background-color: #45a049;
+.btn-primary:hover {
+    filter: brightness(.95);
 }
 
+/* tabela */
 .titulos-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
 }
 
 .titulos-table th,
 .titulos-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #e8eaed;
     padding: 10px;
     text-align: center;
 }
 
 .titulos-table th {
-    background-color: #f4f4f4;
+    background: #f6f8fa;
 }
 
-.titulos-table tr:nth-child(even) {
-    background-color: #fafafa;
-}
-
-.titulos-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-.titulos-table button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 6px;
-    background-color: #f44336;
-    color: #fff;
+.table-clickable tbody tr {
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.titulos-table button:hover {
-    background-color: #d32f2f;
+.table-clickable tbody tr:hover {
+    background: #fafcff;
 }
 
-/* Modal */
+/* célula de ações */
+.acoes-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    border: 1px solid #cfd8dc;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-small:hover {
+    background: #f3f4f6;
+}
+
+.btn-small.danger {
+    border-color: #ef9a9a;
+    color: #c62828;
+}
+
+.btn-small.danger:hover {
+    background: #fde8e8;
+}
+
+/* ====== MODAL ====== */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
 }
 
 .modal-content {
+    width: 640px;
+    max-width: 95vw;
     background: #fff;
-    padding: 25px;
     border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.icon-btn {
+    background: transparent;
+    border: 0;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.grid-2 label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.grid-2 input,
+.grid-2 select {
+    height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.btn-outline {
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background: #f3f3f3;
 }

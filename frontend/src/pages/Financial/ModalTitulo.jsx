@@ -1,65 +1,135 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Financeiro.css';
 
-const ModalTitulo = ({ onClose, onSalvar, tipo }) => {
-    const [form, setForm] = useState({
-        descricao: '',
-        vencimento: '',
-        data_pagamento: '',
-        data_recebimento: '',
-        valor: '',
-        juros: '',
-        acrescimo: '',
-        desconto: '',
-        status: 'Aberto',
-    });
+const toYYYYMMDD = (v) => (v ? new Date(v).toISOString().slice(0, 10) : '');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+export default function ModalTitulo({ modo = 'criar', tipo = 'pagar', initial = null, onClose, onSalvar }) {
+  const isPagar = tipo === 'pagar';
+  const [form, setForm] = useState({
+    descricao: '', valor: '', vencimento: '',
+    juros: 0, acrescimo: 0, desconto: 0, status: 'Aberto',
+    data_pagamento: '', data_recebimento: '',
+  });
+
+  useEffect(() => {
+    if (initial) {
+      setForm({
+        descricao: initial.descricao || '',
+        valor: initial.valor ?? '',
+        vencimento: toYYYYMMDD(initial.vencimento),
+        juros: initial.juros ?? 0,
+        acrescimo: initial.acrescimo ?? 0,
+        desconto: initial.desconto ?? 0,
+        status: initial.status || 'Aberto',
+        data_pagamento: toYYYYMMDD(initial.data_pagamento),
+        data_recebimento: toYYYYMMDD(initial.data_recebimento),
+      });
+    } else {
+      setForm((f) => ({ ...f, vencimento: toYYYYMMDD(new Date()) }));
+    }
+  }, [initial]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.descricao || !form.vencimento || form.valor === '') return;
+    const payload = {
+      descricao: form.descricao,
+      valor: Number(form.valor),
+      vencimento: form.vencimento,
+      juros: Number(form.juros || 0),
+      acrescimo: Number(form.acrescimo || 0),
+      desconto: Number(form.desconto || 0),
+      status: form.status,
+      ...(isPagar ? { data_pagamento: form.data_pagamento || null }
+                  : { data_recebimento: form.data_recebimento || null }),
     };
+    onSalvar(payload);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSalvar(form);
-        onClose();
-    };
-
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <h3>Novo Título</h3>
-                <form onSubmit={handleSubmit} className="form-titulo">
-                    <input name="descricao" placeholder="Descrição" value={form.descricao} onChange={handleChange} required />
-                    <input type="date" name="vencimento" value={form.vencimento} onChange={handleChange} required />
-                    {tipo === 'pagar'
-                        ? <input type="date" name="data_pagamento" placeholder="Data Pagamento" value={form.data_pagamento} onChange={handleChange} />
-                        : <input type="date" name="data_recebimento" placeholder="Data Recebimento" value={form.data_recebimento} onChange={handleChange} />}
-                    <input type="number" name="valor" step="0.01" placeholder="Valor" value={form.valor} onChange={handleChange} required />
-                    <input type="number" name="juros" step="0.01" placeholder="Juros" value={form.juros} onChange={handleChange} />
-                    <input type="number" name="acrescimo" step="0.01" placeholder="Acréscimo" value={form.acrescimo} onChange={handleChange} />
-                    <input type="number" name="desconto" step="0.01" placeholder="Desconto" value={form.desconto} onChange={handleChange} />
-                    <select name="status" value={form.status} onChange={handleChange}>
-                        {tipo === 'pagar' ? (
-                            <>
-                                <option value="Aberto">Aberto</option>
-                                <option value="Pago">Pago</option>
-                            </>
-                        ) : (
-                            <>
-                                <option value="Aberto">Aberto</option>
-                                <option value="Recebido">Recebido</option>
-                            </>
-                        )}
-                    </select>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-                        <button type="submit">Salvar</button>
-                        <button type="button" onClick={onClose} style={{ background: '#f44336' }}>Cancelar</button>
-                    </div>
-                </form>
-            </div>
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3>{modo === 'criar' ? `Novo título - ${isPagar ? 'A Pagar' : 'A Receber'}` : 'Editar título'}</h3>
+          <button className="icon-btn" onClick={onClose}>×</button>
         </div>
-    );
-};
 
-export default ModalTitulo;
+        <form onSubmit={handleSubmit}>
+          <div className="grid-2">
+            <label>
+              Descrição*
+              <input type="text" value={form.descricao}
+                     onChange={(e) => setForm({ ...form, descricao: e.target.value })} required />
+            </label>
+
+            <label>
+              Valor*
+              <input type="number" step="0.01" inputMode="decimal" value={form.valor}
+                     onChange={(e) => setForm({ ...form, valor: e.target.value })} required />
+            </label>
+
+            <label>
+              Vencimento*
+              <input type="date" value={form.vencimento}
+                     onChange={(e) => setForm({ ...form, vencimento: e.target.value })} required />
+            </label>
+
+            <label>
+              Status
+              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
+                {isPagar ? (
+                  <>
+                    <option value="Aberto">Aberto</option>
+                    <option value="Pago">Pago</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="Aberto">Aberto</option>
+                    <option value="Recebido">Recebido</option>
+                  </>
+                )}
+              </select>
+            </label>
+
+            <label>
+              Juros
+              <input type="number" step="0.01" inputMode="decimal"
+                     value={form.juros} onChange={(e) => setForm({ ...form, juros: e.target.value })} />
+            </label>
+
+            <label>
+              Acréscimo
+              <input type="number" step="0.01" inputMode="decimal"
+                     value={form.acrescimo} onChange={(e) => setForm({ ...form, acrescimo: e.target.value })} />
+            </label>
+
+            <label>
+              Desconto
+              <input type="number" step="0.01" inputMode="decimal"
+                     value={form.desconto} onChange={(e) => setForm({ ...form, desconto: e.target.value })} />
+            </label>
+
+            {isPagar ? (
+              <label>
+                Data de pagamento
+                <input type="date" value={form.data_pagamento}
+                       onChange={(e) => setForm({ ...form, data_pagamento: e.target.value })} />
+              </label>
+            ) : (
+              <label>
+                Data de recebimento
+                <input type="date" value={form.data_recebimento}
+                       onChange={(e) => setForm({ ...form, data_recebimento: e.target.value })} />
+              </label>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            <button type="button" className="btn-outline" onClick={onClose}>Cancelar</button>
+            <button type="submit" className="btn-primary">{modo === 'criar' ? 'Salvar' : 'Atualizar'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
