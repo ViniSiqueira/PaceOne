@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Home.css'
+import './Home.css';
 import CalendarCard from '../../components/CalendarCard/CalendarCard';
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from 'recharts';
 import { API_BACKEND_URL } from '../../constants/url';
@@ -15,7 +15,7 @@ const Home = () => {
       .then(data => {
         const formatted = data.map(item => ({
           name: item.status === 'Ativo' ? 'Ativos' : 'Inativos',
-          value: Number(item.total)
+          value: Number(item.total),
         }));
         setStatusData(formatted);
       })
@@ -24,49 +24,71 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <div className='container-header-home'>
-        <h2 className='text-welcome-home'>Bem-vindo ao sistema!</h2>
+      <div className="container-header-home">
+        <h2 className="text-welcome-home">Bem-vindo ao sistema!</h2>
         <h2 className="text-impact-phrase-home">
-          <div>
-            <span className="text-impact-phrase-bold-home">Seu primeiro</span>
-          </div>
-          <div>
-            <span className="text-impact-phrase-bold-home">passo</span> <span className="text-impact-phrase-highlight-home">muda</span>
-          </div>
-          <div>
-            <span className="text-impact-phrase-highlight-home">seu</span> <span className="text-impact-phrase-bold-home">destino!</span>
-          </div>
+          <div><span className="text-impact-phrase-bold-home">Seu primeiro</span></div>
+          <div><span className="text-impact-phrase-bold-home">passo</span> <span className="text-impact-phrase-highlight-home">muda</span></div>
+          <div><span className="text-impact-phrase-highlight-home">seu</span> <span className="text-impact-phrase-bold-home">destino!</span></div>
         </h2>
       </div>
+
       <div className="dashboard-grid-home">
-        <div className="card-dashboard-home">
-          <h3 style={{ margin: 0, marginBottom: 10 }}>Atletas ativos</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={statusData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {statusData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend layout="verical" verticalAlign="center" align="center" />
-            </PieChart>
-          </ResponsiveContainer>
+        {/* Atletas ativos */}
+        <div className="card-dashboard-home card-ativos">
+          <h3 className="card-title">Atletas ativos</h3>
+          <div className="card-body chart">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={statusData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  dataKey="value"
+                  label
+                >
+                  {statusData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend layout="horizontal" verticalAlign="bottom" align="center" height={24} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-        <div className="card-dashboard-home">Preparação de treinos</div>
-        <div className="card-dashboard-home card-treinos-home">Treinos da semana</div>
-        <div className="card-dashboard-home">Mensalidades</div>
-        <div className="card-dashboard-home">
-          <h3 style={{ margin: 0 }}>Eventos</h3>
-          <CalendarCard />
+
+        {/* Preparação de treinos */}
+        <div className="card-dashboard-home card-prep">
+          <h3 className="card-title">Preparação de treinos</h3>
+          <div className="card-body chart">
+            {/* outro gráfico aqui */}
+          </div>
+        </div>
+
+        {/* Treinos da semana */}
+        <div className="card-dashboard-home card-treinos">
+          <h3 className="card-title">Treinos da semana</h3>
+          <div className="card-body">
+            {/* lista de treinos */}
+          </div>
+        </div>
+
+        {/* Mensalidades */}
+        <div className="card-dashboard-home card-mensal">
+          <h3 className="card-title">Mensalidades</h3>
+          <div className="card-body chart">
+            {/* gráfico de mensalidades */}
+          </div>
+        </div>
+
+        {/* Eventos */}
+        <div className="card-dashboard-home card-eventos">
+          <h3 className="card-title">Eventos</h3>
+          <div className="card-body">
+            <CalendarCard />
+          </div>
         </div>
       </div>
     </div>

@@ -17,6 +17,11 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 105px);
+  overflow: hidden;          /* <- evita scroll da página */
+}
+
+.container-header-home h2 {
+  margin: 0;
 }
 
 .container-header-home {
@@ -32,25 +37,107 @@
   font-weight: bold;
 }
 
+/* -------- GRID Desktop -------- */
 .dashboard-grid-home {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto;
   gap: 1rem;
   padding: 1rem;
-  font-size: 22px;
-  overflow: auto;
+  height: 100%;              /* <- usa toda a altura disponível */
+  overflow: auto;            /* <- só o grid pode rolar */
+  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-rows: minmax(240px, 1fr) minmax(240px, 1fr);
+  grid-template-areas:
+    "ativos prep treinos"
+    "mensal eventos treinos";
+  align-items: stretch;
+}
+
+/* Mapeamento das áreas */
+.card-ativos {
+  grid-area: ativos;
+}
+
+.card-prep {
+  grid-area: prep;
+}
+
+.card-treinos {
+  grid-area: treinos;
+}
+
+.card-mensal {
+  grid-area: mensal;
+}
+
+.card-eventos {
+  grid-area: eventos;
 }
 
 .card-dashboard-home {
   background-color: white;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
   min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.card-treinos-home {
-  grid-row: span 2;
+.card-title {
+  margin: 0 0 .5rem 0;
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+.card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Cards com gráficos: altura fixa p/ ResponsiveContainer */
+.card-body.chart {
+  height: 260px;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+/* -------- Breakpoints -------- */
+
+/* até 1200px: 2 colunas */
+@media (max-width: 1200px) {
+  .dashboard-grid-home {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, minmax(260px, auto));
+    grid-template-areas:
+      "ativos treinos"
+      "prep   treinos"
+      "mensal eventos";
+  }
+}
+
+/* até 900px: 2 colunas mas treinos ocupa linha inteira */
+@media (max-width: 900px) {
+  .dashboard-grid-home {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "ativos prep"
+      "treinos treinos"
+      "mensal eventos";
+  }
+}
+
+/* até 640px: tudo empilhado */
+@media (max-width: 640px) {
+  .dashboard-grid-home {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "ativos"
+      "prep"
+      "treinos"
+      "mensal"
+      "eventos";
+  }
 }
