@@ -17,7 +17,8 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 105px);
-  overflow: hidden;          /* <- evita scroll da página */
+  overflow: hidden;
+  /* <- evita scroll da página */
 }
 
 .container-header-home h2 {
@@ -43,8 +44,10 @@
   display: grid;
   gap: 1rem;
   padding: 1rem;
-  height: 100%;              /* <- usa toda a altura disponível */
-  overflow: auto;            /* <- só o grid pode rolar */
+  height: 100%;
+  /* <- usa toda a altura disponível */
+  overflow: auto;
+  /* <- só o grid pode rolar */
   grid-template-columns: 1.2fr 1fr 1fr;
   grid-template-rows: minmax(240px, 1fr) minmax(240px, 1fr);
   grid-template-areas:
@@ -104,7 +107,54 @@
   overflow: hidden;
 }
 
-/* -------- Breakpoints -------- */
+.treinos-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.treino-dia {
+  margin-bottom: .5rem;
+}
+
+.treino-dia-titulo {
+  font-weight: 700;
+  color: #5a6872;
+  margin: .25rem 0;
+}
+
+.treino-ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.treino-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: .25rem 0;
+}
+
+.treino-avatar {
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.treino-texto {
+  color: #2b2b2b;
+}
+
+.treino-nome {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.treino-vazio {
+  color: #9aa3a9;
+  font-style: italic;
+  margin-left: 2px;
+}
 
 /* até 1200px: 2 colunas */
 @media (max-width: 1200px) {

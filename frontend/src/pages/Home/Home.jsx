@@ -37,6 +37,7 @@ const Home = () => {
   const [statusData, setStatusData] = useState([]);
   const [titulosPagar, setTitulosPagar] = useState([]);
   const [titulosReceber, setTitulosReceber] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
     fetch(`${API_BACKEND_URL}/api/clientes/status-count`)
@@ -49,6 +50,13 @@ const Home = () => {
         setStatusData(formatted);
       })
       .catch(err => console.error('Erro ao buscar dados:', err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_BACKEND_URL}/api/clientes`)
+      .then((r) => r.json())
+      .then((data) => setClientes(Array.isArray(data) ? data : []))
+      .catch((e) => console.error('Erro ao buscar clientes:', e));
   }, []);
 
   useEffect(() => {
@@ -68,6 +76,26 @@ const Home = () => {
     };
     load();
   }, []);
+
+  function parseDias(d) {
+    if (Array.isArray(d)) return d;
+    if (typeof d === 'string') {
+      try {
+        const parsed = JSON.parse(d);
+        if (Array.isArray(parsed)) return parsed;
+      } catch { }
+      return d.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+    return [];
+  }
+
+  const diasSemana = [
+    { key: 'Segunda', titulo: 'Segunda-feira' },
+    { key: 'Terça', titulo: 'Terça-feira' },
+    { key: 'Quarta', titulo: 'Quarta-feira' },
+    { key: 'Quinta', titulo: 'Quinta-feira' },
+    { key: 'Sexta', titulo: 'Sexta-feira' },
+  ];
 
   const cashflowData = useMemo(() => {
     const months = lastNMonthsLabels(3); // ajuste se quiser mais/menos meses
@@ -97,6 +125,23 @@ const Home = () => {
 
     return Array.from(map.values());
   }, [titulosPagar, titulosReceber]);
+
+  const treinosSemana = useMemo(() => {
+    const mapa = Object.fromEntries(diasSemana.map(d => [d.key, []]));
+    for (const c of clientes) {
+      const dias = parseDias(c.dias_de_treino);
+      for (const d of dias) {
+        if (mapa[d]) {
+          mapa[d].push(c);
+        }
+      }
+    }
+    // ordena por nome, opcional
+    for (const k of Object.keys(mapa)) {
+      mapa[k].sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+    }
+    return mapa;
+  }, [clientes]);
 
   return (
     <div className="home-page">
@@ -146,8 +191,33 @@ const Home = () => {
         {/* Treinos da semana */}
         <div className="card-dashboard-home card-treinos">
           <h3 className="card-title">Treinos da semana</h3>
-          <div className="card-body">
-            {/* lista de treinos */}
+          <div className="card-body treinos-list">
+            {diasSemana.map(({ key, titulo }) => (
+              <div key={key} className="treino-dia">
+                <h4 className="treino-dia-titulo">{titulo}</h4>
+                <ul className="treino-ul">
+                  {treinosSemana[key]?.length ? (
+                    treinosSemana[key].map((cli) => (
+                      <li key={cli.id} className="treino-item">
+                        <img
+                          className="treino-avatar"
+                          src="https://api.dicebear.com/7.x/thumbs/svg?seed=gym"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                        <span className="treino-texto">
+                          Treino de musculação com{' '}
+                          <span className="treino-nome">{cli.nome}</span>
+                        </span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="treino-vazio">Sem treinos</li>
+                  )}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
