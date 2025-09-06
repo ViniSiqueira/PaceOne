@@ -1,1 +1,1 @@
-export const API_BACKEND_URL = 'http://localhost:5000'
+export const API_BACKEND_URL = process.env.API_BACKEND_URL || 'http://localhost:5000';
