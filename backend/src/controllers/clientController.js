@@ -23,6 +23,8 @@ const salvarCliente = async (req, res) => {
         dias_de_treino,
         modalidade,
         plano,
+        valor_mensalidade,
+        dia_vencimento
     } = req.body;
 
     try {
@@ -32,14 +34,14 @@ const salvarCliente = async (req, res) => {
         cep, logradouro, bairro, cidade, complemento, estado,
         emergencia_nome, emergencia_telefone,
         limitacao_fisica, cirurgia, problema_articular,
-        pratica_atividade, dias_de_treino, modalidade, plano
+        pratica_atividade, dias_de_treino, modalidade, plano, valor_mensalidade, dia_vencimento
       )
       VALUES (
         $1, $2, $3, $4, $5, $6,
         $7, $8, $9, $10, $11, $12,
         $13, $14,
         $15, $16, $17,
-        $18, $19, $20, $21
+        $18, $19, $20, $21, $22, $23
       )
       RETURNING *;
     `;
@@ -49,7 +51,7 @@ const salvarCliente = async (req, res) => {
             cep, logradouro, bairro, cidade, complemento, estado,
             emergencia_nome, emergencia_telefone,
             limitacao_fisica, cirurgia, problema_articular,
-            pratica_atividade, dias_de_treino, modalidade, plano,
+            pratica_atividade, dias_de_treino, modalidade, plano, valor_mensalidade, dia_vencimento
         ];
 
         const result = await pool.query(query, values);

@@ -38,6 +38,8 @@ const CreateClient = () => {
                 dias_de_treino: clienteParaEditar.dias_de_treino || [],
                 modalidade: clienteParaEditar.modalidade || '',
                 plano: clienteParaEditar.plano || '',
+                valor_mensalidade: clienteParaEditar?.valor_mensalidade || '',
+                dia_vencimento: clienteParaEditar?.dia_vencimento || '',
             };
         }
         return {
@@ -63,6 +65,8 @@ const CreateClient = () => {
             dias_de_treino: [],
             modalidade: '',
             plano: '',
+            valor_mensalidade: '',
+            dia_vencimento: '',
         };
     });
 
@@ -100,8 +104,10 @@ const CreateClient = () => {
 
         const payload = {
             ...form,
+            valor_mensalidade: form.valor_mensalidade || null,
+            dia_vencimento: form.dia_vencimento ? Number(form.dia_vencimento) : null,
             dias_de_treino: form.dias_de_treino,
-        };        
+        };
 
         const method = payload.id ? 'PUT' : 'POST';
         const url = payload.id
@@ -148,6 +154,8 @@ const CreateClient = () => {
                 dias_de_treino: [],
                 modalidade: '',
                 plano: '',
+                valor_mensalidade: '',
+                dia_vencimento: '',
             });
         } catch (error) {
             toast.error(error.message);
@@ -246,6 +254,25 @@ const CreateClient = () => {
                 <option value="Semestral">Semestral</option>
                 <option value="Anual">Anual</option>
             </select>
+            <input
+                type="number"
+                step="0.01"
+                name="valor_mensalidade"
+                placeholder="Valor mensalidade (R$)"
+                value={form.valor_mensalidade}
+                onChange={handleChange}
+            />
+
+            <input
+                type="number"
+                name="dia_vencimento"
+                placeholder="Dia de vencimento (1-31)"
+                min={1}
+                max={31}
+                value={form.dia_vencimento}
+                onChange={handleChange}
+            />
+
 
             <button type="submit">Cadastrar</button>
         </form>

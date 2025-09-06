@@ -7,6 +7,7 @@ const modalityRoutes = require('./routes/modalityRoutes');
 const trainingRoutes = require('./routes/trainingRoutes');
 const routineRoutes = require('./routes/routineRoutes');
 const financeiroRoutes = require('./routes/financeiroRoutes');
+require('./scripts/runGerarMensalidades');
 
 const app = express();
 

@@ -32,13 +32,13 @@ const ModalTitulo = ({ onClose, onSalvar, tipo }) => {
                 <form onSubmit={handleSubmit} className="form-titulo">
                     <input name="descricao" placeholder="Descrição" value={form.descricao} onChange={handleChange} required />
                     <input type="date" name="vencimento" value={form.vencimento} onChange={handleChange} required />
-                    {tipo === 'pagar' 
-                        ? <input type="date" name="data_pagamento" placeholder="Data Pagamento" value={form.data_pagamento} onChange={handleChange} /> 
+                    {tipo === 'pagar'
+                        ? <input type="date" name="data_pagamento" placeholder="Data Pagamento" value={form.data_pagamento} onChange={handleChange} />
                         : <input type="date" name="data_recebimento" placeholder="Data Recebimento" value={form.data_recebimento} onChange={handleChange} />}
-                    <input type="number" name="valor" placeholder="Valor" value={form.valor} onChange={handleChange} required />
-                    <input type="number" name="juros" placeholder="Juros" value={form.juros} onChange={handleChange} />
-                    <input type="number" name="acrescimo" placeholder="Acréscimo" value={form.acrescimo} onChange={handleChange} />
-                    <input type="number" name="desconto" placeholder="Desconto" value={form.desconto} onChange={handleChange} />
+                    <input type="number" name="valor" step="0.01" placeholder="Valor" value={form.valor} onChange={handleChange} required />
+                    <input type="number" name="juros" step="0.01" placeholder="Juros" value={form.juros} onChange={handleChange} />
+                    <input type="number" name="acrescimo" step="0.01" placeholder="Acréscimo" value={form.acrescimo} onChange={handleChange} />
+                    <input type="number" name="desconto" step="0.01" placeholder="Desconto" value={form.desconto} onChange={handleChange} />
                     <select name="status" value={form.status} onChange={handleChange}>
                         {tipo === 'pagar' ? (
                             <>
